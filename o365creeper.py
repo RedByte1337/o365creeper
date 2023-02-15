@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
 
 # Created by Korey McKinley, Senior Security Consulant at LMG Security
 # https://lmgsecurity.com
@@ -36,14 +36,17 @@ def main():
                 s = req.session()
                 line = line.split()
                 email = ' '.join(line)
-                body = '{"Username":"%s"}' % email
+                body = '{"Username":"%s","isOtherIdpSupported":true}' % email
                 request = req.post(url, data=body)
                 response = request.text
-                valid = re.search('"IfExistsResult":0,', response)
+                valid = re.search('"IfExistsResult":[056],', response)
                 invalid = re.search('"IfExistsResult":1,', response)
-                if invalid:
+                throttled = re.search('"ThrottleStatus":[12],', response)
+                if throttled:
+                    print '%s - THROTTLED' % email
+                elif invalid:
                     print '%s - INVALID' % email
-                if valid and args.output is not None:
+                elif valid and args.output is not None:
                     print '%s - VALID' % email
                     with open(args.output, 'a+') as output_file: 
                         output_file.write(email+'\n')
@@ -53,14 +56,17 @@ def main():
 
     elif args.email is not None:
         email = args.email
-        body = '{"Username":"%s"}' % email
+        body = '{"Username":"%s","isOtherIdpSupported":true}' % email
         request = req.post(url, data=body)
         response = request.text
-        valid = re.search('"IfExistsResult":0', response)
-        invalid = re.search('"IfExistsResult":1', response)
-        if invalid:
+        valid = re.search('"IfExistsResult":[056],', response)
+        invalid = re.search('"IfExistsResult":1,', response)
+        throttled = re.search('"ThrottleStatus":[12],', response)
+        if throttled:
+            print '%s - THROTTLED' % email
+        elif invalid:
             print '%s - INVALID' % email
-        if valid and args.output is not None:
+        elif valid and args.output is not None:
             print '%s - VALID' % email
             with open(args.output, 'w') as output_file:
                 output_file.write(email+'\n')
