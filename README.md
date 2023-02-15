@@ -1,3 +1,16 @@
+## Modifications
+
+Modified version of o365creeper which adds the `isOtherIdpSupported=true` parameter in the request body to also check if other IDP's are supported.
+- IfExistsResult:
+    - 0 The account exists, and uses that domain for authentication
+    - 1 The account doesn’t exist
+    - 2 The response is being throttled
+    - 4 Some server error
+    - 5 The account exists, but is set up to authenticate with a different identity provider. This could indicate the account is only used as a personal account
+    - 6 The account exists, and is set up to use both the domain and a different identity provider
+   
+(https://warroom.rsmus.com/enumerating-emails-via-office-com/)
+
 ## Description
     This is a simple Python script used to validate email accounts that belong to Office 365 tenants. 
     This script takes either a single email address or a list of email addresses as input, 
