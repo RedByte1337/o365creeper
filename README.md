@@ -11,6 +11,8 @@ Modified version of o365creeper which adds the `isOtherIdpSupported=true` parame
    
 (https://warroom.rsmus.com/enumerating-emails-via-office-com/)
 
+Note: Very dirty unoptimized code, should be reworked.
+
 ## Description
     This is a simple Python script used to validate email accounts that belong to Office 365 tenants. 
     This script takes either a single email address or a list of email addresses as input, 
